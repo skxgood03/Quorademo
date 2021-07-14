@@ -12,7 +12,7 @@
             </div>
             <div class="question-group">
                 <p class="question-title"><a href="{{ url_for('detail',question_id=i.id) }}">{{ i.title }}</a></p>
-                <p class="question-content">{{ i.content }}</p>
+                <p class="question-content">{{ i.content|safe|striptags|truncate }}</p>
                 <div class="question-info">
                     <span class="question-author">{{ i.author.username }}</span>
                     <span class="question-time">{{ i.create_time }}</span>

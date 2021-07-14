@@ -1,28 +1,94 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block title %}
-发布问答
+    发布问答
 {% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/question.css') }}">
-
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/editor.md-master/css/editormd.css') }}">
+        <style>
+            .main {
+                background: hsla(0, 0%, 100%, .75);
+                -webkit-backdrop-filter: blur(5px);
+                backdrop-filter: blur(5px);
+                width: 1200px;
+                margin: 0 auto;
+                overflow: hidden;
+                padding: 10px;
+            }
+        </style>
 {% endblock %}
-
 {% block main %}
-<h3 class="character">发布问答</h3>
-<form action=""method="post" >
-    <div class="form-container">
-        <div class="form-group">
-            <input type="text" placeholder="请输入标题" class="form-control" name="title">
-            
-        </div>
-        <div class="form-group">
-            <textarea name="content"  rows="5" placeholder="请输入内容" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary">发布</button>
-        </div>
+    <div class="main">
+        <h3 class="character">发布问答</h3>
+        <form action="" method="post">
+            <div class="form-container">
+                <div class="form-group">
+                    <input type="text" placeholder="请输入标题" class="form-control" name="title">
+
+                </div>
+                <div class="form-group" id="editormd">
+                    <textarea name="content" rows="5" placeholder="请输入内容" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">发布</button>
+                </div>
+            </div>
+        </form>
+        {#    <div id="editormd" class="editormd">#}
+        {#    </div>#}
+        <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/editor.md-master/editormd.js') }}"></script>
+        <script type="text/javascript">
+            //初始化编辑器
+            var testEditor;
+            $(function () {
+                testEditor = editormd("editormd", {
+                    width: "100%",
+                    height: 740,
+                    path: "{{ url_for('static',filename='editormd/editor.md-master/lib/') }}",
+                    theme: "",
+                    previewTheme: "",
+                    editorTheme: "pastel-on-dark",
+                    markdown: "",
+                    codeFold: true,
+                    saveHTMLToTextarea: true, // 保存 HTML 到 Textarea
+                    searchReplace: true,
+                    htmlDecode: "style,script,iframe|on*", // 开启 HTML 标签解析，为了安全性，默认不开启
+                    emoji: true,
+                    taskList: true,
+                    tocm: true, // Using [TOCM]
+                    tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+                    flowChart: true,             // 开启流程图支持，默认关闭
+                    sequenceDiagram: true,       // 开启时序/序列图支持，默认关闭,
+                    //配置本地图片上传参数
+                    imageUpload: true,
+                    imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                    imageUploadURL: "{{ url_for('.upload') }}", //指定图片要上传到哪个视图函数
+                    onload: function () {
+                        //图片上传成功后，可以做点什么。
+
+                    }
+                });
+            });
+            //获取编辑器内容
+            var blogcontent = encodeURIComponent(testEditor.getMarkdown());
+
+        </script>
+        {#    <script type="text/javascript">#}
+        {#    $(function () {#}
+        {#        editormd("editormd", {#}
+        {#            // width: "100%", 请不要添加#}
+        {#            height: 640,#}
+        {#            syncScrolling: "single",#}
+        {#            path: "{{ url_for('static',filename='editormd/editor.md-master/lib/') }}",#}
+        {#            saveHTMLToTextarea : true#}
+        {##}
+        {#        });#}
+        {#    });#}
+        {#</script>#}
     </div>
-</form>
+
 {% endblock %}
+

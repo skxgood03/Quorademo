@@ -12,9 +12,9 @@
     <span class="q1">时间: {{ question.create_time }}</span>
     </p>
     <hr>
-    <p class="question-content">{{ question.content }}</p>
+    <p class="question-content">{{ question.content|markdown|safe }}</p>
     <hr>
-    <h4>评论(1)</h4>
+    <h4>评论</h4>
     <form action="{{ url_for('add_answer') }}" method="post">
         <div class="form-group">
             <input type="text" class="form-control" name="answer_comment" placeholder="请填写评论">
